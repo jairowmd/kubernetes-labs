@@ -1,7 +1,7 @@
 # 3
 # Deployment Gerencia Pods automaticamente - Se um Pod morrer, ele recria.
 # Ele cuida da criação, atualização e substituição dos Pods.
-# Aplicar kubectl apply -f deployment.yaml
+# Aplicar kubectl apply -f deployment-ngnix.yaml
 #  verificar - kubectl get deployments
 #  verificar - kubectl get pods
 # kubectl get endpoints nginx-service - verificar
@@ -27,7 +27,28 @@ spec:
       - name: nginx # Nome do container
         image: nginx # Imagem usada (nginx oficial)
 
+        volumeMounts: # → Monta o volume dentro do container
+        - name: dados
+          mountPath: /usr/share/nginx/html
+
         #  referenciando o configmap no bloco abaixo
         envFrom: # → Indica que o valor virá de uma fonte externa (não é um valor fixo).
-          - configMapRef: # → Fonte é um ConfigMap.
-              name: app-config  # → Nome do ConfigMap que você criou.
+        - configMapRef: # → Fonte é um ConfigMap.
+            name: app-config  # → Nome do ConfigMap que você criou.
+
+        env: 
+        - name: DB_USER # variáveis do arquivo de secrets
+          valueFrom:
+            secretKeyRef:
+              name: db-secret-1 # variáveis do arquivo de secrets
+              key: usuario
+
+        - name: DB_PASSWORD # variáveis do arquivo de secrets
+          valueFrom:
+            secretKeyRef:
+              name: db-secret-1 # variáveis do arquivo de secrets
+              key: senha
+
+      volumes:          # <- volumes ficam fora dos containers
+      - name: dados
+        emptyDir: {} # <- volume temporário, apagado quando o Pod é destruído

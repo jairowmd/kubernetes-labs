@@ -28,3 +28,4 @@ kubectl get svc
 kubectl get deployments
 kubectl describe pod <nome>
 kubectl logs <nome>
+kubectl rollout status deployment/nginx-deployment    

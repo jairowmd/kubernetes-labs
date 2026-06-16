@@ -1,0 +1,16 @@
+# 2
+# Manifesto arquivo yaml para criação de Service - Permite acessar Pods através de um IP fixo dentro do cluster.
+# forma de expor e manter acessível um conjunto de Pods, garantindo um endereço IP estável e balanceamento de carga, mesmo quando os Pods são criados ou destruídos dinamicamente. 
+# o Service fornece um IP fixo durante toda sua vida útil.
+
+
+apiVersion: v1
+kind: Service # Indica o tipo de objeto que está sendo criado. Neste caso, é um Service.
+metadata: # Contém informações de identificação do recurso.
+  name: nginx-service # Nome único do Service dentro do namespace. Esse nome será usado para referenciar o serviço em DNS interno 
+spec: # Define as especificações do Service.
+  selector: # Diz quais Pods fazem parte do Service. Ele procura Pods com labels correspondentes.
+    app: nginx # Apenas Pods que têm a label app=nginx serão incluídos neste Service.
+  ports:
+  - port: 80 # Porta exposta pelo Service para os clientes. É a porta "pública" dentro do cluster.
+    targetPort: 80 # Porta dentro dos Pods que o tráfego será redirecionado. Ou seja, o Service recebe na porta 80 e encaminha para a porta 80 dos Pods.

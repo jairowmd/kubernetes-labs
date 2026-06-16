@@ -1,0 +1,14 @@
+# Manifesto arquivo yaml para criação de POD simples - O Pod é a menor unidade do Kubernetes. É onde seus containers executam.
+# Criando 1 POD com a Imagem nginx com o nome de nginx-pod
+# colocando a labels nginx para ser identificada no service
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-pod
+  labels:
+    app: nginx
+spec:
+  containers:
+    - name: nginx
+      image: nginx:latest

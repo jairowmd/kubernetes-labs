@@ -1,0 +1,33 @@
+# 3
+# Deployment Gerencia Pods automaticamente - Se um Pod morrer, ele recria.
+# Ele cuida da criação, atualização e substituição dos Pods.
+# Aplicar kubectl apply -f deployment.yaml
+#  verificar - kubectl get deployments
+#  verificar - kubectl get pods
+# kubectl get endpoints nginx-service - verificar
+ 
+apiVersion: apps/v1
+kind: Deployment # Tipo de recurso: Deployment
+metadata:
+  name: nginx-deployment # Nome do Deployment
+spec:
+  replicas: 3 # Número de réplicas (Pods) desejados
+
+  selector: # O selector define quais Pods pertencem ao Deployment.
+    matchLabels:
+      app: nginx # Seleciona Pods com esse label
+  
+  template:  # Modelo para criar os Pods  É o "molde" dos Pods. Sempre que o Deployment precisar criar ou substituir um Pod, ele usará esse template.
+    metadata:
+      labels:
+        app: nginx # Label aplicado aos Pods criados
+  
+    spec:
+      containers:
+      - name: nginx # Nome do container
+        image: nginx # Imagem usada (nginx oficial)
+
+        #  referenciando o configmap no bloco abaixo
+        envFrom: # → Indica que o valor virá de uma fonte externa (não é um valor fixo).
+          - configMapRef: # → Fonte é um ConfigMap.
+              name: app-config  # → Nome do ConfigMap que você criou.

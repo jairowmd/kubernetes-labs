@@ -1,0 +1,15 @@
+# 4
+# Usado para armazenar configurações do app separadas para nao precisar recriar os containers
+# Criado variaveis que pode mudar sem recompilar o container
+# Se você quiser mudar o ambiente de homolog para prod, basta alterar o ConfigMap sem recompilar ou redeployar a aplicação inteira.
+# referenciei o configmap no deployment
+# verificar - kubectl exec -it pod-name -- env
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-config # Nome único do ConfigMap dentro do namespace. Esse nome será usado para referenciar o ConfigMap em Pods ou Deployments.
+
+data: # Aqui ficam os dados de configuração propriamente ditos, em formato chave-valor.
+  ambiente: homolog #  Define que o ambiente da aplicação é de homologação 
+  empresa: Jairo-company # Uma chave que guarda o nome da empresa

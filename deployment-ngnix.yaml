@@ -26,6 +26,15 @@ spec:
       containers:
       - name: nginx # Nome do container
         image: nginx # Imagem usada (nginx oficial)
+        ports:
+        - containerPort: 80 # a expor a porta 80 do container para teste livenessProbe
+
+        livenessProbe: # Define que estamos configurando uma verificação de "vida" para o contêiner.
+          httpGet: # Indica que o tipo de verificação será uma requisição HTTP.
+            path: / # O caminho da URL que será acessado dentro do contêiner. Se esse endpoint responder com código HTTP 200–399, considera-se que o contêiner está saudável.
+            port: 80 # Porta do contêiner onde a requisição será feita.
+          initialDelaySeconds: 10 # Tempo (em segundos) que o Kubernetes espera após iniciar o contêiner antes de começar a fazer as verificações.
+          periodSeconds: 5 # Intervalo (em segundos) entre cada verificação.
 
         volumeMounts: # → Monta o volume dentro do container
         - name: dados
